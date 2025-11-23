@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registros</title>
+<style>
+    body { font-family: Arial; background: #f3f3f3; padding: 20px; }
+    h1 {
+        background: #003366; color: white; padding: 15px;
+        border-radius: 10px; text-align: center;
+    }
+    table {
+        width: 100%; background: white; border-collapse: collapse;
+        margin-top: 20px; box-shadow: 0 0 10px #aaa;
+    }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background: #003366; color: white; }
+</style>
+</head>
+<body>
+
+<h1>Registros de Préstamos</h1>
+
+<table>
+<thead>
+<tr>
+    <th>Fecha y hora</th>
+    <th>Alumno</th>
+    <th>No. Control</th>
+    <th>Carrera</th>
+    <th>Hora de clase</th>
+    <th>Profesor</th>
+    <th>Aula</th>
+    <th>Material</th>
+</tr>
+</thead>
+<tbody id="tabla"></tbody>
+</table>
+
+<script>
+let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
+let t = "";
+
+registros.forEach(r=>{
+    t += `
+    <tr>
+        <td>${r.fechaHora}</td>
+        <td>${r.nombre}</td>
+        <td>${r.control}</td>
+        <td>${r.carrera}</td>
+        <td>${r.hora}</td>
+        <td>${r.profesor}</td>
+        <td>${r.aula}</td>
+        <td>${r.material}</td>
+    </tr>`;
+});
+
+document.getElementById("tabla").innerHTML = t;
+</script>
+
+</body>
+</html>
