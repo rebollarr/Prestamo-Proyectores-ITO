@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Préstamo de Proyectores - ITO</title>
+<style>
+    body {
+        font-family: Arial;
+        background: #f3f3f3;
+        padding: 20px;
+    }
+    h1 {
+        background: #003366;
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #aaa;
+        max-width: 600px;
+        margin: auto;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+    select, input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background: #003366;
+        color: white;
+        border: none;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    a {
+        text-align: center;
+        display: block;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Bienvenido al Sistema de Préstamo de Proyectores del Instituto Tecnológico de Oaxaca</h1>
+
+<div class="logo">
+    <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAYAAAC0y0ecAAAACXBIWXMAAAsTAAALEwEAmpwYAAA..." width="180">
+</div>
+
+<div class="card">
+
+<label>Nombre del alumno:</label>
+<input id="nombre">
+
+<label>Número de control:</label>
+<input id="control">
+
+<label>Carrera:</label>
+<select id="carrera">
+<option>Ingeniería en Sistemas Computacionales</option>
+<option>Ingeniería Civil</option>
+<option>Ingeniería Química</option>
+<option>Ingeniería Industrial</option>
+<option>Ingeniería en Gestión Empresarial</option>
+<option>Ingeniería Mecánica</option>
+<option>Ingeniería Eléctrica</option>
+<option>Ingeniería Electrónica</option>
+<option>Licenciatura en Administración</option>
+<option>Licenciatura en Contador Público</option>
+</select>
+
+<label>Hora de clase:</label>
+<select id="hora">
+</select>
+
+<label>Profesor:</label>
+<input id="profesor">
+
+<label>Aula:</label>
+<input id="aula">
+
+<label>Material y equipo:</label>
+<input value="Cañón, Cable HDMI, Cable, Extensión" disabled>
+
+<button onclick="guardar()">Registrar Préstamo</button>
+
+<a href="registros.html">Ver registros</a>
+
+</div>
+
+<script>
+// Crear horas 7am–8pm
+const horaSel = document.getElementById("hora");
+for(let h = 7; h <= 20; h++){
+    let h2 = h+1;
+    horaSel.innerHTML += `<option>${h}am - ${h2}am</option>`;
+}
+
+// Guardar registro
+function guardar(){
+    let nombre = nombre.value.trim();
+    let control = control.value.trim();
+    let carrera = carrera.value;
+    let hora = horaSel.value;
+    let profesor = profesor.value.trim();
+    let aula = aula.value.trim();
+    let material = "Cañón, Cable HDMI, Cable, Extensión";
+    let fechaHora = new Date().toLocaleString();
+
+    if(aula === ""){
+        alert("Ingresa el aula.");
+        return;
+    }
+
+    // Bloqueo de aula prestada
+    let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
+    let ocupado = registros.find(r => r.aula === aula);
+
+    if(ocupado){
+        alert("⚠ El proyector de esta aula ya está prestado.");
+        return;
+    }
+
+    registros.push({nombre, control, carrera, hora, profesor, aula, material, fechaHora});
+    localStorage.setItem("prestamos", JSON.stringify(registros));
+    alert("Préstamo registrado con éxito.");
+}
+</script>
+
+</body>
+</html>
