@@ -4,17 +4,22 @@
 <meta charset="UTF-8">
 <title>Registros</title>
 <style>
-    body { font-family: Arial; background: #f3f3f3; padding: 20px; }
-    h1 {
-        background: #003366; color: white; padding: 15px;
-        border-radius: 10px; text-align: center;
-    }
-    table {
-        width: 100%; background: white; border-collapse: collapse;
-        margin-top: 20px; box-shadow: 0 0 10px #aaa;
-    }
-    th, td { padding: 10px; border: 1px solid #ccc; }
-    th { background: #003366; color: white; }
+body { font-family: Arial; background:#eee; padding:20px; }
+h1 {
+    background:#003366; color:white; padding:15px;
+    border-radius:10px; text-align:center;
+}
+table {
+    width:100%; background:white; border-collapse:collapse;
+    margin-top:20px; box-shadow:0 0 10px #aaa;
+}
+th, td { padding:10px; border:1px solid #ccc; text-align:center; }
+th { background:#003366; color:white; }
+button {
+    padding:6px 10px; background:#c62828; color:white;
+    border:none; border-radius:6px; cursor:pointer;
+}
+button:hover { background:#8e0000; }
 </style>
 </head>
 <body>
@@ -32,30 +37,48 @@
     <th>Profesor</th>
     <th>Aula</th>
     <th>Material</th>
+    <th>Acción</th>
 </tr>
 </thead>
 <tbody id="tabla"></tbody>
 </table>
 
+<br>
+<center><a href="index.html">Regresar</a></center>
+
 <script>
-let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
-let t = "";
+function cargar(){
+    let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
+    let t = "";
 
-registros.forEach(r=>{
-    t += `
-    <tr>
-        <td>${r.fechaHora}</td>
-        <td>${r.nombre}</td>
-        <td>${r.control}</td>
-        <td>${r.carrera}</td>
-        <td>${r.hora}</td>
-        <td>${r.profesor}</td>
-        <td>${r.aula}</td>
-        <td>${r.material}</td>
-    </tr>`;
-});
+    registros.forEach((r,i)=>{
+        t += `
+        <tr>
+            <td>${r.fechaHora}</td>
+            <td>${r.nombre}</td>
+            <td>${r.control}</td>
+            <td>${r.carrera}</td>
+            <td>${r.hora}</td>
+            <td>${r.profesor}</td>
+            <td>${r.aula}</td>
+            <td>${r.material}</td>
+            <td><button onclick="devolver(${i})">Proyector de vuelta</button></td>
+        </tr>`;
+    });
 
-document.getElementById("tabla").innerHTML = t;
+    document.getElementById("tabla").innerHTML = t;
+}
+
+function devolver(i){
+    if(confirm("¿Confirmas que este proyector ya fue devuelto?")){
+        let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
+        registros.splice(i,1);
+        localStorage.setItem("prestamos", JSON.stringify(registros));
+        cargar();
+    }
+}
+
+cargar();
 </script>
 
 </body>
