@@ -4,145 +4,110 @@
 <meta charset="UTF-8">
 <title>Préstamo de Proyectores - ITO</title>
 <style>
-    body {
-        font-family: Arial;
-        background: #f3f3f3;
-        padding: 20px;
-    }
-    h1 {
-        background: #003366;
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-    }
-    .logo {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px #aaa;
-        max-width: 600px;
-        margin: auto;
-    }
-    label {
-        font-weight: bold;
-        display: block;
-        margin-top: 10px;
-    }
-    select, input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-    }
-    button {
-        margin-top: 20px;
-        padding: 10px;
-        background: #003366;
-        color: white;
-        border: none;
-        width: 100%;
-        border-radius: 8px;
-        font-size: 16px;
-    }
-    a {
-        text-align: center;
-        display: block;
-        margin-top: 20px;
-        font-weight: bold;
-    }
+body { font-family: Arial; padding: 20px; background:#f0f0f0; }
+h1 {
+    background:#003366; color:white; padding:15px;
+    border-radius:10px; text-align:center;
+}
+form {
+    background:white; padding:20px; border-radius:10px;
+    box-shadow:0 0 10px #aaa; width:400px; margin:auto;
+}
+label { font-weight:bold; display:block; margin-top:10px; }
+input, select {
+    width:100%; padding:8px; margin-top:5px;
+    border:1px solid #999; border-radius:5px;
+}
+button {
+    margin-top:15px; width:100%; padding:10px;
+    background:#0066cc; color:white; border:none;
+    border-radius:5px; cursor:pointer;
+}
+button:hover { background:#004c99; }
 </style>
 </head>
 <body>
 
-<h1>Bienvenido al Sistema de Préstamo de Proyectores del Instituto Tecnológico de Oaxaca</h1>
+<h1>Bienvenido al sistema de préstamo de proyectores<br>Instituto Tecnológico de Oaxaca</h1>
 
-<div class="logo">
-    <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAYAAAC0y0ecAAAACXBIWXMAAAsTAAALEwEAmpwYAAA..." width="180">
-</div>
+<form id="form">
+    <label>Nombre del alumno</label>
+    <input type="text" id="nombre" required>
 
-<div class="card">
+    <label>Número de control</label>
+    <input type="text" id="control" required>
 
-<label>Nombre del alumno:</label>
-<input id="nombre">
+    <label>Carrera</label>
+    <select id="carrera" required>
+        <option>Ingeniería en Sistemas Computacionales</option>
+        <option>Ingeniería Civil</option>
+        <option>Ingeniería Química</option>
+        <option>Ingeniería Industrial</option>
+        <option>Ingeniería en Gestión Empresarial</option>
+        <option>Ingeniería Mecánica</option>
+        <option>Ingeniería Eléctrica</option>
+        <option>Ingeniería Electrónica</option>
+        <option>Licenciatura en Administración</option>
+        <option>Licenciatura en Contador Público</option>
+    </select>
 
-<label>Número de control:</label>
-<input id="control">
+    <label>Profesor</label>
+    <input type="text" id="profesor" required>
 
-<label>Carrera:</label>
-<select id="carrera">
-<option>Ingeniería en Sistemas Computacionales</option>
-<option>Ingeniería Civil</option>
-<option>Ingeniería Química</option>
-<option>Ingeniería Industrial</option>
-<option>Ingeniería en Gestión Empresarial</option>
-<option>Ingeniería Mecánica</option>
-<option>Ingeniería Eléctrica</option>
-<option>Ingeniería Electrónica</option>
-<option>Licenciatura en Administración</option>
-<option>Licenciatura en Contador Público</option>
-</select>
+    <label>Aula</label>
+    <input type="text" id="aula" required>
 
-<label>Hora de clase:</label>
-<select id="hora">
-</select>
+    <label>Hora de clase</label>
+    <select id="hora" required></select>
 
-<label>Profesor:</label>
-<input id="profesor">
+    <label>Material y equipo</label>
+    <input type="text" id="material" value="Cañón, Cable HDMI, Cable de energía, Extensión" readonly>
 
-<label>Aula:</label>
-<input id="aula">
-
-<label>Material y equipo:</label>
-<input value="Cañón, Cable HDMI, Cable, Extensión" disabled>
-
-<button onclick="guardar()">Registrar Préstamo</button>
-
-<a href="registros.html">Ver registros</a>
-
-</div>
+    <button type="submit">Registrar préstamo</button>
+</form>
 
 <script>
-// Crear horas 7am–8pm
-const horaSel = document.getElementById("hora");
-for(let h = 7; h <= 20; h++){
-    let h2 = h+1;
-    horaSel.innerHTML += `<option>${h}am - ${h2}am</option>`;
+// Generar horas
+let h = document.getElementById("hora");
+for(let i=7; i<20; i++){
+    let siguiente = i+1;
+    h.innerHTML += `<option>${i}:00 - ${siguiente}:00</option>`;
 }
 
-// Guardar registro
-function guardar(){
-    let nombre = nombre.value.trim();
-    let control = control.value.trim();
-    let carrera = carrera.value;
-    let hora = horaSel.value;
-    let profesor = profesor.value.trim();
-    let aula = aula.value.trim();
-    let material = "Cañón, Cable HDMI, Cable, Extensión";
-    let fechaHora = new Date().toLocaleString();
+document.getElementById("form").onsubmit = function(e){
+    e.preventDefault();
 
-    if(aula === ""){
-        alert("Ingresa el aula.");
+    let prestamos = JSON.parse(localStorage.getItem("prestamos") || "[]");
+
+    // bloquear aula si ya está ocupada
+    let aula = document.getElementById("aula").value;
+    if(prestamos.some(p => p.aula === aula)){
+        alert("El proyector de esta aula ya fue prestado. Debe devolverse primero.");
         return;
     }
 
-    // Bloqueo de aula prestada
-    let registros = JSON.parse(localStorage.getItem("prestamos") || "[]");
-    let ocupado = registros.find(r => r.aula === aula);
+    let registro = {
+        fechaHora: new Date().toLocaleString(),
+        nombre: document.getElementById("nombre").value,
+        control: document.getElementById("control").value,
+        carrera: document.getElementById("carrera").value,
+        profesor: document.getElementById("profesor").value,
+        aula: aula,
+        hora: document.getElementById("hora").value,
+        material: document.getElementById("material").value
+    };
 
-    if(ocupado){
-        alert("⚠ El proyector de esta aula ya está prestado.");
-        return;
-    }
+    prestamos.push(registro);
+    localStorage.setItem("prestamos", JSON.stringify(prestamos));
 
-    registros.push({nombre, control, carrera, hora, profesor, aula, material, fechaHora});
-    localStorage.setItem("prestamos", JSON.stringify(registros));
-    alert("Préstamo registrado con éxito.");
-}
+    alert("Préstamo registrado correctamente.");
+    document.getElementById("form").reset();
+};
 </script>
+
+<br><center>
+<a href="registros.html">Ver registros</a>
+</center>
 
 </body>
 </html>
